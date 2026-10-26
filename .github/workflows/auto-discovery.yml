@@ -1,0 +1,40 @@
+name: Scheduled discovery - MOCK only
+
+on:
+  schedule:
+    # Every six hours, at :17 UTC (04:17, 10:17, 16:17, 22:17 JST).
+    - cron: '17 1,7,13,19 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: mercari-ebay-scheduled-discovery
+  cancel-in-progress: false
+
+jobs:
+  discover:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      DATA_MODE: MOCK
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Run deterministic, offline discovery prototype
+        run: node scripts/run-pipeline.mjs --mode MOCK --output out/opportunities.json
+      - name: Assert no live collection or publication
+        run: |
+          node -e 'const r=require("./out/opportunities.json");if(r.mode!=="MOCK" || r.containsRealMarketData!==false || r.publicationStatus!=="DEMO_ONLY") process.exit(1);'
+      - name: Upload demo report (no live market data)
+        uses: actions/upload-artifact@v4
+        with:
+          name: mock-opportunities
+          path: out/opportunities.json
+          retention-days: 7
+          if-no-files-found: error
