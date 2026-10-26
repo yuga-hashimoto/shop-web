@@ -1,0 +1,15 @@
+{
+  "name": "mercari-ebay",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test",
+    "lint": "node --check lib/core.mjs && node --check scripts/run-pipeline.mjs",
+    "pipeline:mock": "node scripts/run-pipeline.mjs --mode MOCK --output out/opportunities.json",
+    "ci": "npm run lint && npm test && npm run pipeline:mock"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}
