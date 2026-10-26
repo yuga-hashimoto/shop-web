@@ -1,0 +1,33 @@
+name: CI - tests and safety checks
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-mercari-ebay
+  cancel-in-progress: false
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install dependencies
+        run: npm install --ignore-scripts --no-audit --no-fund
+      - name: Lint and unit tests
+        run: npm run lint && npm test
+      - name: Mock pipeline smoke test
+        run: |
+          npm run pipeline:mock
+          node -e 'const r=require("./out/opportunities.json");if(r.mode!=="MOCK" || r.containsRealMarketData!==false || r.publicationStatus!=="DEMO_ONLY") process.exit(1);'
