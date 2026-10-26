@@ -1,0 +1,35 @@
+{
+  "_notice": "Illustrative deny-by-default config. Never claim approval without explicit source evidence.",
+  "mercari_listings": {
+    "status": "PENDING",
+    "enabled": false,
+    "permissionEvidenceUrl": null,
+    "licenseScope": null,
+    "allowedOperations": [],
+    "expiresAt": null
+  },
+  "ebay_active": {
+    "status": "PENDING",
+    "enabled": false,
+    "permissionEvidenceUrl": null,
+    "licenseScope": null,
+    "allowedOperations": [],
+    "expiresAt": null
+  },
+  "ebay_sold": {
+    "status": "PENDING",
+    "enabled": false,
+    "permissionEvidenceUrl": null,
+    "licenseScope": null,
+    "allowedOperations": [],
+    "expiresAt": null
+  },
+  "mercari_ambassador_resale": {
+    "status": "DISABLED",
+    "enabled": false,
+    "permissionEvidenceUrl": null,
+    "licenseScope": null,
+    "allowedOperations": [],
+    "expiresAt": null
+  }
+}
